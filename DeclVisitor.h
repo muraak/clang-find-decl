@@ -15,21 +15,21 @@ public:
       : SourceManager(SourceManager) {}
 
   bool VisitFunctionDecl(clang::FunctionDecl *D) {
-      llvm::outs() << "Found " << D->getQualifiedNameAsString() << " at "
+      llvm::outs() << "$Func:" << D->getQualifiedNameAsString() << "$"
                  << getDeclLocation(D->getBeginLoc()) << "\n";
     return true;
   }
 
   bool VisitParmVarDecl(clang::ParmVarDecl * D) {
-    llvm::outs() << "Found Param:" << D->getQualifiedNameAsString() << "\n";
+    llvm::outs() << "$Param:" << D->getQualifiedNameAsString() << "\n";
     return true;
   }
 
 private:
   std::string getDeclLocation(clang::SourceLocation Loc) const {
     std::ostringstream OSS;
-    OSS << SourceManager.getFilename(Loc).str() << ":"
-        << SourceManager.getSpellingLineNumber(Loc) << ":"
+    OSS /*<< SourceManager.getFilename(Loc).str() << "@"*/
+        << SourceManager.getSpellingLineNumber(Loc) << "$"
         << SourceManager.getSpellingColumnNumber(Loc);
     return OSS.str();
   }
